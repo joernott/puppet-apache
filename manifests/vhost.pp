@@ -98,6 +98,11 @@
 #   Set one or more Alias directives (e.g '/phpmyadmin /usr/share/phpMyAdmin'
 #   or ['/alias1 /path/to/alias', '/alias2 /path/to/secondalias'])
 #
+# [*rewrites*]
+#   Define rewrite rules. Every rule consists of a hash containing an optional
+#   - RewriteCond hash (teststring => pattern) and
+#   - RewriteRule hash (Name, Pattern, Substitution, Flags)
+#
 # == Examples:
 #  apache::vhost { 'site.name.fqdn':
 #    docroot  => '/path/to/docroot',
@@ -151,7 +156,8 @@ define apache::vhost (
   $directory_options            = '',
   $directory_allow_override     = 'None',
   $directory_require            = '',
-  $aliases                      = ''
+  $aliases                      = '',
+  $rewrites                     = {}
 ) {
 
   $ensure = $enable ? {

@@ -62,4 +62,20 @@
     Alias <%= @aliases %>
 <% end -%>
 <% end -%>
+<% if @rewrites != "" -%>
+    RewriteEngine on
+ <% if @rewrites.is_a? Hash -%>
+  <% rewrites.keys.sort.each do |rewrite_key| -%>
+  # Rule <%= rewrite_key %>
+   <% if rewrites[rewrite_key].has_key?('RewriteCond') -%>
+    <% rewrites[rewrite_key]['RewriteCond'].keys.sort.each do |rewritecond_teststring| -%>
+     RewriteCond <%= rewritecond_teststring %> <%= rewrites[rewrite_key]['RewriteCond'][rewritecond_teststring] %>
+    <% end -%>
+   <% end -%>
+   <% rewrites[rewrite_key]['RewriteRule'].keys.sort.each do |rewriterule_key| -%>
+    RewriteRule <%= rewrites[rewrite_key]['RewriteRule'][rewriterule_key]['Pattern'] %>  <%= rewrites[rewrite_key]['RewriteRule'][rewriterule_key]['Substitution'] %> <%= rewrites[rewrite_key]['RewriteRule'][rewriterule_key]['Flags'] %>
+   <% end -%>
+  <% end -%> 
+ <% end -%>
+<% end -%>
 </VirtualHost>
